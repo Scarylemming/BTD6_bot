@@ -1,0 +1,78 @@
+[
+    {   
+        "map" : "in_the_loop",
+        "method": "image",
+        "image": "images/towers/u.png",
+        "coordinates": [1163, 559]
+    },
+
+    { 
+        "map" : "scrapyard", 
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [281, 352]
+    }, 
+
+    {
+        "map" : "tree_stump",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [457, 394]
+    }, 
+
+    {
+        "map" : "winter_park",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [548, 463]
+    },
+
+    {
+        "map" : "the_cabin",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [607, 360]
+    },
+
+    {
+        "map" : "spa_pits",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [558, 724]
+    }, 
+
+    {
+        "map" : "carved",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [440, 502]
+    },
+
+    {
+        "map" : "the_cabin",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [607, 360]
+    },
+
+    {
+        "map" : "town_center",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [842, 596]
+    },
+
+    {
+        "map" : "end_of_the_road",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [373, 588]
+    },
+
+    {
+        "map" : "monkey_meadow",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [926, 509]
+    }
+] 
