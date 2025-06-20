@@ -90,11 +90,9 @@ class Gameplay:
             center_y = max_loc[1] + th // 2
             pyautogui.moveTo(center_x, center_y, duration=0.2)
             pyautogui.click()
-            time.sleep(0.2)
+            time.sleep(0.1)
             pyautogui.moveTo(coordinates[0], coordinates[1], duration=0.2)
             pyautogui.click()
-            time.sleep(0.2)
-            pyautogui.click()  # Click again to select the placed tower
             logging.info(f"Tower placed and selected at {coordinates}")
             return True
         else:

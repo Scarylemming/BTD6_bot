@@ -74,5 +74,110 @@
         "method" : "image",
         "image" : "images/towers/u.png",
         "coordinates" : [926, 509]
+    },
+
+    {
+        "map" : "cubism",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [739, 575]
+    },
+
+    {
+        "map" : "skates",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [441, 474]
+    },
+
+    {
+        "map" : "tinkerton",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [484, 731]
+    },
+
+    {
+        "map" : "middle_of_the_road",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [539, 607]
+    },
+
+    {
+        "map" : "one_two_tree",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [217, 878]
+    },
+
+    {
+        "map" : "the_cabin",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [607, 360]
+    },
+
+    {
+        "map" : "resort",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [421, 337]
+    },
+
+    {
+        "map" : "lotus_island",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [1216, 615]
+    },
+
+    {
+        "map" : "candy_falls",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [484, 816]
+    },
+
+    {
+        "map" : "park_path",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [1050, 396]
+    },
+
+    {
+        "map" : "alpine_run",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [636, 399]
+    },
+
+    {
+        "map" : "frozen_over",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [365, 838]
+    },
+
+    {
+        "map" : "four_circles",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [808, 594]
+    },
+
+    {
+        "map" : "hedge",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [285, 511]
+    },
+
+    {
+        "map" : "logs",
+        "method" : "image",
+        "image" : "images/towers/u.png",
+        "coordinates" : [528, 358]
     }
 ] 
