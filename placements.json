@@ -1,183 +1,1033 @@
-[
-    {   
-        "map" : "in_the_loop",
-        "method": "image",
-        "image": "images/towers/u.png",
-        "coordinates": [1163, 559]
+{
+    "in_the_loop": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1163, 559],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1163, 559],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1163, 559],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    { 
-        "map" : "scrapyard", 
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [281, 352]
-    }, 
-
-    {
-        "map" : "tree_stump",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [457, 394]
-    }, 
-
-    {
-        "map" : "winter_park",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [548, 463]
+    "scrapyard": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [281, 352],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [281, 352],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [281, 352],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "the_cabin",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [607, 360]
+    "tree_stump": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [457, 394],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [457, 394],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [457, 394],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
+    "winter_park": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [548, 463],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [548, 463],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "6": [
+                        {
+                            "method": "key",
+                            "key": "q",
+                            "action": "place",
+                            "coordinates": [370,475]
+                        },
 
-    {
-        "map" : "spa_pits",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [558, 724]
-    }, 
-
-    {
-        "map" : "carved",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [440, 502]
+                        {
+                            "method": "key",
+                            "key": "q",
+                            "action": "place",
+                            "coordinates": [540,732]
+                        }
+                    ],
+                    "9": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "action": "place",
+                            "coordinates": [573, 503]
+                        }
+                    ],
+                    "22" : [
+                        {
+                            "method": "key",
+                            "key": "v",
+                            "action": "place",
+                            "coordinates": [1017, 293]
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "the_cabin",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [607, 360]
+    "the_cabin": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [607, 360],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [607, 360],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [607, 360],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "town_center",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [842, 596]
+    "spa_pits": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [558, 724],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [558, 724],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [558, 724],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "end_of_the_road",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [373, 588]
+    "carved": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [440, 502],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [440, 502],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [440, 502],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "monkey_meadow",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [926, 509]
+    "town_center": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [842, 596],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [842, 596],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [842, 596],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "cubism",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [739, 575]
+    "end_of_the_road": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [373, 588],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [373, 588],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [373, 588],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "skates",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [441, 474]
+    "monkey_meadow": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [926, 509],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [926, 509],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [926, 509],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "tinkerton",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [484, 731]
+    "cubism": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [739, 575],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [739, 575],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [739, 575],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "middle_of_the_road",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [539, 607]
+    "skates": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [441, 474],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [441, 474],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [441, 474],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "one_two_tree",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [217, 878]
+    "tinkerton": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 731],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 731],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 731],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "the_cabin",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [607, 360]
+    "middle_of_the_road": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [539, 607],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [539, 607],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [539, 607],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "resort",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [421, 337]
+    "one_two_tree": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [217, 878],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [217, 878],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [217, 878],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "lotus_island",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [1216, 615]
+    "resort": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [421, 337],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [421, 337],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [421, 337],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "candy_falls",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [484, 816]
+    "lotus_island": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1216, 615],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1216, 615],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1216, 615],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "park_path",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [1050, 396]
+    "candy_falls": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 816],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 816],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [484, 816],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "alpine_run",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [636, 399]
+    "park_path": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1050, 396],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1050, 396],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [1050, 396],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "frozen_over",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [365, 838]
+    "alpine_run": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [636, 399],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [636, 399],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [636, 399],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "four_circles",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [808, 594]
+    "frozen_over": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [365, 838],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [365, 838],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [365, 838],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "hedge",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [285, 511]
+    "four_circles": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [808, 594],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [808, 594],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [808, 594],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     },
-
-    {
-        "map" : "logs",
-        "method" : "image",
-        "image" : "images/towers/u.png",
-        "coordinates" : [528, 358]
+    "hedge": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [285, 511],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [285, 511],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [285, 511],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "logs": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [528, 358],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        },
+        "hard": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [528, 358],
+                            "action": "place"
+                        }
+                    ]
+                }
+            },
+            "impoppable": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u.png",
+                            "coordinates": [528, 358],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
     }
-] 
+} 

@@ -7,40 +7,100 @@ import logging
 import subprocess
 import os
 import psutil
-from config import *
 import json
 from gameplay import Gameplay
 import keyboard
 import pytesseract
 import difflib
-from sentence_transformers import SentenceTransformer, util
 from difflib import SequenceMatcher
 from skimage.metrics import structural_similarity as ssim
 import matplotlib.pyplot as plt
+import sys
+import importlib.util
+
+# Command line argument handling
+def load_config(config_file=None):
+    """Load configuration from specified file or use default"""
+    if config_file is None:
+        # Default config
+        import config
+        return config
+    else:
+        # Load specified config file
+        try:
+            # Remove .py extension if present
+            if config_file.endswith('.py'):
+                config_file = config_file[:-3]
+            
+            # Import the config module
+            spec = importlib.util.spec_from_file_location("config", f"{config_file}.py")
+            config_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(config_module)
+            
+            print(f"✅ Loaded config from: {config_file}.py")
+            return config_module
+        except Exception as e:
+            print(f"❌ Error loading config file '{config_file}.py': {e}")
+            print("🔄 Falling back to default config...")
+            import config
+            return config
+
+# Parse command line arguments
+def parse_arguments():
+    """Parse command line arguments"""
+    config_file = None
+    
+    if len(sys.argv) > 1:
+        config_file = sys.argv[1]
+        print(f"🎯 Using config file: {config_file}")
+    
+    return config_file
+
+# Load configuration
+CONFIG_FILE = parse_arguments()
+CONFIG = load_config(CONFIG_FILE)
+
+# Import all config variables
+GAME_WINDOW_TITLE = CONFIG.GAME_WINDOW_TITLE
+GAME_WINDOW_SIZE = CONFIG.GAME_WINDOW_SIZE
+RUN_IN_BACKGROUND = CONFIG.RUN_IN_BACKGROUND
+MINIMIZE_AFTER_LAUNCH = CONFIG.MINIMIZE_AFTER_LAUNCH
+RESTORE_WINDOW_BEFORE_ACTION = CONFIG.RESTORE_WINDOW_BEFORE_ACTION
+MINIMIZE_AFTER_ACTION = CONFIG.MINIMIZE_AFTER_ACTION
+GAME_PATH = CONFIG.GAME_PATH
+MAP_DIFFICULTY = CONFIG.MAP_DIFFICULTY
+DEFAULT_MAP = CONFIG.DEFAULT_MAP
+GAME_DIFFICULTY = CONFIG.GAME_DIFFICULTY
+MODE = CONFIG.MODE
+DEFAULT_TOWERS = CONFIG.DEFAULT_TOWERS
+ROUNDS_TO_PLAY = CONFIG.ROUNDS_TO_PLAY
+WAIT_TIME = CONFIG.WAIT_TIME
+CONFIDENCE_THRESHOLD = CONFIG.CONFIDENCE_THRESHOLD
+SCREENSHOT_REGION = CONFIG.SCREENSHOT_REGION
+EMERGENCY_STOP_REGION = CONFIG.EMERGENCY_STOP_REGION
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('bot.log'),
+        logging.FileHandler('bot.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
 
 class BTD6Bot:
     def __init__(self):
+        print("🚀 Initializing BTD6 Bot...")
         self.running = True
-        self.setup_safety_features()
-        self.MAPS = self.read_maps()
-
-
-    def initialize_model(self):
-        # Initialize the semantic model
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
-        # Pre-compute embeddings for all map names
-        self.map_embeddings = self.model.encode(self.MAPS)
         
+        print("🔧 Setting up safety features...")
+        self.setup_safety_features()
+        
+        print("🗺️ Loading map configurations...")
+        self.MAPS = self.get_maps()
+        print(f"✅ Loaded {len(self.MAPS)} maps")
+
     def setup_safety_features(self):
         """Setup emergency stop and other safety features"""
         pyautogui.FAILSAFE = True
@@ -59,34 +119,48 @@ class BTD6Bot:
     def launch_game(self):
         """Launch BTD6 if it's not already running"""
         try:
+            print("🎮 Checking if BTD6 is running...")
             if self.is_game_running():
+                print("✅ BTD6 is already running")
                 logging.info("BTD6 is already running")
                 # Focus the BTD6 window
+                print("🎯 Focusing BTD6 window...")
                 try:
                     import pygetwindow as gw
                     windows = gw.getWindowsWithTitle(GAME_WINDOW_TITLE)
                     if windows:
                         windows[0].activate()
+                        print("✅ BTD6 window focused")
                         logging.info("Focused BTD6 window.")
                     else:
+                        print("⚠️ BTD6 window not found to focus")
                         logging.warning("BTD6 window not found to focus.")
                 except Exception as e:
+                    print(f"⚠️ Could not focus BTD6 window: {e}")
                     logging.warning(f"Could not focus BTD6 window: {e}")
                 return True
             if not os.path.exists(GAME_PATH):
+                print(f"❌ Game not found at path: {GAME_PATH}")
                 logging.error(f"Game not found at path: {GAME_PATH}")
                 return False
+            print("🚀 Launching BTD6...")
             logging.info("Launching BTD6...")
             subprocess.Popen([GAME_PATH])
-            for _ in range(30):
+            print("⏳ Waiting for BTD6 to start...")
+            for i in range(30):
                 if self.is_game_running():
+                    print("✅ BTD6 launched successfully")
                     logging.info("BTD6 launched successfully")
                     # time.sleep(5)
                     return True
                 time.sleep(1)
+                if i % 5 == 0:  # Show progress every 5 seconds
+                    print(f"⏳ Still waiting... ({i+1}/30 seconds)")
+            print("❌ Failed to launch BTD6")
             logging.error("Failed to launch BTD6")
             return False
         except Exception as e:
+            print(f"❌ Error launching game: {e}")
             logging.error(f"Error launching game: {e}")
             return False
 
@@ -158,6 +232,17 @@ class BTD6Bot:
             # time.sleep(1)
         return False
 
+
+    def wait_for_any_image(self, image_paths, confidence=0.8):
+        logging.info(f"Waiting for any of these images: {image_paths}")
+        while True:
+            for image_path in image_paths:
+                if self.find_image_on_screen(image_path, confidence)[0] is not None:
+                    logging.info(f"Found image: {image_path}")
+                    return True
+            time.sleep(1)
+        return False
+
     def read_maps(self):
         """Read and return a list of unique map names from placements.json"""
         try:
@@ -166,9 +251,8 @@ class BTD6Bot:
             
             # Extract unique map names using a set
             map_names = set()
-            for placement in placements:
-                if "map" in placement:
-                    map_names.add(placement["map"])
+            for map_name in placements.keys():
+                map_names.add(map_name)
             
             # Convert set to sorted list for consistent ordering
             return sorted(list(map_names))
@@ -296,7 +380,7 @@ class BTD6Bot:
         if self.find_image_on_screen('images/collection_event/collect.png')[0] is not None:
             print("Collect towers")
             self.wait_and_click('images/collection_event/collect.png', 'Click Collection Event')
-            time.sleep(1)
+            self.wait_for_any_image(['images/collection_event/tier4.png', 'images/collection_event/tier3.png', 'images/collection_event/tier2.png', 'images/collection_event/tier1.png'])
             
             # Define tower types to collect (in order of priority)
             tower_types = ["tier2"]
@@ -336,76 +420,226 @@ class BTD6Bot:
             self.wait_and_click('images/collection_event/back.png', 'Back to home')
         return True
 
-    def place_towers_for_map(self, map_name):
-        """Place towers for a specific map based on the placements.json configuration"""
+    def place_towers_for_round(self, map_name, current_round, game_mode=None):
+        """Place towers for a specific round during gameplay"""
+        if game_mode is None:
+            game_mode = GAME_DIFFICULTY.lower()
+            
         try:
             with open('placements.json', 'r') as f:
                 all_placements = json.load(f)
             
-            # Filter placements for the current map
-            map_placements = [p for p in all_placements if p.get("map") == map_name]
+            # Check if map exists
+            if map_name not in all_placements:
+                logging.warning(f"Map '{map_name}' not found in placements.json")
+                return False
             
-            if not map_placements:
-                logging.warning(f"No tower placements found for map: {map_name}")
+            map_data = all_placements[map_name]
+            
+            # Check if game mode exists for this map
+            if game_mode not in map_data:
+                logging.warning(f"Game mode '{game_mode}' not found for map '{map_name}'")
+                return False
+            
+            game_mode_data = map_data[game_mode]
+            
+            # Check if mode exists for this game mode
+            mode = MODE.lower()
+            if mode not in game_mode_data:
+                logging.warning(f"Mode '{mode}' not found for map '{map_name}' in '{game_mode}' mode")
+                return False
+            
+            mode_data = game_mode_data[mode]
+            rounds_data = mode_data.get("rounds", {})
+            
+            # Check if there are actions for the current round
+            if str(current_round) not in rounds_data:
+                logging.debug(f"No tower placements for round {current_round} on map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+                return True  # Not an error, just no placements for this round
+            
+            round_actions = rounds_data[str(current_round)]
+            gameplay = Gameplay()
+            
+            logging.info(f"Processing round {current_round} for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+            
+            for action in round_actions:
+                try:
+                    method = action.get("method", "key")
+                    coordinates = tuple(action["coordinates"])
+                    action_type = action.get("action", "place")
+                    
+                    if action_type == "place":
+                        if method == "key":
+                            key = action["key"]
+                            gameplay.place_tower(key, coordinates)
+                            logging.info(f"Placed tower with key '{key}' at {coordinates}")
+                        elif method == "image":
+                            if "image" not in action:
+                                logging.error(f"Missing 'image' field in action: {action}")
+                                continue
+                            image = action["image"]
+                            gameplay.place_tower_by_image(image, coordinates)
+                            logging.info(f"Placed tower with image '{image}' at {coordinates}")
+                        else:
+                            logging.warning(f"Unknown placement method: {method} in action: {action}")
+                    
+                    elif action_type == "upgrade":
+                        if method == "key":
+                            key = action["key"]
+                            # Click on the tower at coordinates, then press the upgrade key
+                            pyautogui.click(coordinates)
+                            time.sleep(0.1)
+                            keyboard.press_and_release(key)
+                            logging.info(f"Upgraded tower at {coordinates} with key '{key}'")
+                        else:
+                            logging.warning(f"Unknown upgrade method: {method} in action: {action}")
+                    
+                    elif action_type == "sell":
+                        # Click on the tower at coordinates, then press the sell key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        keyboard.press_and_release('backspace')  # Default sell key
+                        logging.info(f"Sold tower at {coordinates}")
+                    
+                    elif action_type == "target":
+                        # Click on the tower at coordinates, then press the target key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        target_key = action.get("key", "tab")  # Default target key
+                        keyboard.press_and_release(target_key)
+                        logging.info(f"Changed target priority at {coordinates} with key '{target_key}'")
+                    
+                    else:
+                        logging.warning(f"Unknown action type: {action_type} in action: {action}")
+                    
+                    time.sleep(0.5)  # Small delay between actions
+                    
+                except Exception as e:
+                    logging.error(f"Error processing action {action}: {e}")
+            
+            logging.info(f"Completed round {current_round} actions for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+            return True
+            
+        except Exception as e:
+            logging.error(f"Error loading or processing placements.json for round {current_round}: {e}")
+            return False
+
+    def place_towers_for_map(self, map_name, game_mode=None):
+        """Place towers for a specific map and game mode based on the placements.json configuration"""
+        if game_mode is None:
+            game_mode = GAME_DIFFICULTY.lower()
+            
+        try:
+            with open('placements.json', 'r') as f:
+                all_placements = json.load(f)
+            
+            # Check if map exists
+            if map_name not in all_placements:
+                logging.warning(f"Map '{map_name}' not found in placements.json")
+                return False
+            
+            map_data = all_placements[map_name]
+            
+            # Check if game mode exists for this map
+            if game_mode not in map_data:
+                logging.warning(f"Game mode '{game_mode}' not found for map '{map_name}'")
+                return False
+            
+            game_mode_data = map_data[game_mode]
+            
+            # Check if mode exists for this game mode
+            mode = MODE.lower()
+            if mode not in game_mode_data:
+                logging.warning(f"Mode '{mode}' not found for map '{map_name}' in '{game_mode}' mode")
+                return False
+            
+            mode_data = game_mode_data[mode]
+            rounds_data = mode_data.get("rounds", {})
+            
+            if not rounds_data:
+                logging.warning(f"No rounds data found for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
                 return False
 
             gameplay = Gameplay()
-            for placement in map_placements:
-                try:
-                    method = placement.get("method", "key")
-                    coordinates = tuple(placement["coordinates"])
-                    if method == "key":
-                        key = placement["key"]
-                        gameplay.place_tower(key, coordinates)
-                    elif method == "image":
-                        if "image" not in placement:
-                            logging.error(f"Missing 'image' field in placement: {placement}")
-                            continue
-                        image = placement["image"]
-                        gameplay.place_tower_by_image(image, coordinates)
-                    else:
-                        logging.warning(f"Unknown placement method: {method} in placement: {placement}")
-                    time.sleep(0.5)
-                except Exception as e:
-                    logging.error(f"Error placing tower for placement {placement}: {e}")
-            logging.info(f"All towers placed for map: {map_name}")
+            
+            # Sort rounds by number to ensure proper order
+            sorted_rounds = sorted(rounds_data.keys(), key=int)
+            
+            for round_num in sorted_rounds:
+                round_actions = rounds_data[round_num]
+                
+                logging.info(f"Processing round {round_num} for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+                
+                for action in round_actions:
+                    try:
+                        method = action.get("method", "key")
+                        coordinates = tuple(action["coordinates"])
+                        action_type = action.get("action", "place")
+                        
+                        if action_type == "place":
+                            if method == "key":
+                                key = action["key"]
+                                gameplay.place_tower(key, coordinates)
+                                logging.info(f"Placed tower with key '{key}' at {coordinates}")
+                            elif method == "image":
+                                if "image" not in action:
+                                    logging.error(f"Missing 'image' field in action: {action}")
+                                    continue
+                                image = action["image"]
+                                gameplay.place_tower_by_image(image, coordinates)
+                                logging.info(f"Placed tower with image '{image}' at {coordinates}")
+                            else:
+                                logging.warning(f"Unknown placement method: {method} in action: {action}")
+                        
+                        elif action_type == "upgrade":
+                            if method == "key":
+                                key = action["key"]
+                                # Click on the tower at coordinates, then press the upgrade key
+                                pyautogui.click(coordinates)
+                                time.sleep(0.1)
+                                keyboard.press_and_release(key)
+                                logging.info(f"Upgraded tower at {coordinates} with key '{key}'")
+                            else:
+                                logging.warning(f"Unknown upgrade method: {method} in action: {action}")
+                        
+                        elif action_type == "sell":
+                            # Click on the tower at coordinates, then press the sell key
+                            pyautogui.click(coordinates)
+                            time.sleep(0.1)
+                            keyboard.press_and_release('backspace')  # Default sell key
+                            logging.info(f"Sold tower at {coordinates}")
+                        
+                        elif action_type == "target":
+                            # Click on the tower at coordinates, then press the target key
+                            pyautogui.click(coordinates)
+                            time.sleep(0.1)
+                            target_key = action.get("key", "tab")  # Default target key
+                            keyboard.press_and_release(target_key)
+                            logging.info(f"Changed target priority at {coordinates} with key '{target_key}'")
+                        
+                        else:
+                            logging.warning(f"Unknown action type: {action_type} in action: {action}")
+                        
+                        time.sleep(0.5)  # Small delay between actions
+                        
+                    except Exception as e:
+                        logging.error(f"Error processing action {action}: {e}")
+            
+            logging.info(f"All towers placed for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
             return True
+            
         except Exception as e:
             logging.error(f"Error loading or processing placements.json: {e}")
             return False
-
-    def find_semantic_match(self, text, threshold=0.2):
-        """Find the most semantically similar map name using sentence transformers"""
-        try:
-            # Encode the input text
-            text_embedding = self.model.encode([text])[0]
-            
-            # Calculate cosine similarity with all map names
-            similarities = util.cos_sim(text_embedding, self.map_embeddings)[0]
-            
-            # Get the best match
-            best_idx = similarities.argmax()
-            best_score = similarities[best_idx].item()
-            
-            logging.info(f"Text to match: {text}")
-            logging.info(f"Best match: {self.MAPS[best_idx]} with score: {best_score:.3f}")
-            
-            # Return the best match if it's above threshold
-            if best_score >= threshold:
-                return self.MAPS[best_idx]
-            return None
-            
-        except Exception as e:
-            logging.error(f"Error in semantic matching: {e}")
-            return None
 
     def clean_text(self, text):
         # Lowercase, remove non-alphanumeric, strip
         import re
         return re.sub(r'[^a-z0-9 ]', '', text.lower().strip())
 
-    def find_best_map_match(self, ocr_text, fuzzy_threshold=0.7, semantic_threshold=0.2):
+    def find_best_map_match(self, ocr_text, fuzzy_threshold=0.7):
         cleaned_ocr = self.clean_text(ocr_text)
+        print(f"Cleaned OCR: {cleaned_ocr}")
         cleaned_maps = [self.clean_text(m) for m in self.MAPS]
 
         # Fuzzy matching
@@ -422,11 +656,9 @@ class BTD6Bot:
         if best_fuzzy_score >= fuzzy_threshold:
             return best_fuzzy_map
 
-        # Fall back to semantic matching
-        best_semantic_map = self.find_semantic_match(ocr_text, threshold=semantic_threshold)
-        logging.info(f"Best semantic match: {best_semantic_map}")
-
-        return best_semantic_map
+        # If no good match found, return the best match anyway
+        logging.warning(f"No good match found, using best available: {best_fuzzy_map}")
+        return best_fuzzy_map
 
     def read_which_map_to_play(self):
         # Take a screenshot at the coordinates x=304, y=218, width=366, height=28
@@ -456,7 +688,7 @@ class BTD6Bot:
             closest_match = "cubism"
             print("We got no text read my OCR, but we will play cubism because that's the only problematic map.")
         else :
-            # Find the closest match using semantic similarity
+            # Find the closest match using fuzzy matching
             closest_match = self.find_best_map_match(text)
         print("Map to play:", closest_match)
         return closest_match
@@ -466,12 +698,15 @@ class BTD6Bot:
         pyautogui.click(500,400)
         # self.wait_and_click(f'images/maps/{map_name}.png', f'Map: {map_name}')
         # Click on the difficulty
-        self.wait_and_click(f'images/difficulty/Easy.png', f'Easy difficulty')
+        self.wait_and_click(f'images/difficulty/{GAME_DIFFICULTY}.png', f'{GAME_DIFFICULTY} difficulty')
         # Click on the mode
         self.wait_and_click(f'images/difficulty/{MODE}.png', f'Mode: {MODE}')
+        # If Impoppable, click on OK to pass the warning
+        if MODE == "Impoppable":
+            self.wait_and_click(f'images/misc/ok.png', 'OK button')
         # Click on the round
-        self.wait_and_click(f'images/misc/round.png', 'Find round to start placing towers')
-        # Place towers
+        self.wait_for_any_image([f'images/misc/churchill.png'])
+        # Place towers - uses GAME_DIFFICULTY automatically
         self.place_towers_for_map(map_name)
         # Press space to start the game
         keyboard.press_and_release('space')
@@ -483,32 +718,61 @@ class BTD6Bot:
     def take_screenshot_and_compare(self):
         # Take a screenshot of the map
         screenshot = pyautogui.screenshot(region=(290, 220, 437, 244))
-        # screenshot.save(f'images/maps/{time.time()}.png')
+        
+        # Save screenshot with descriptive name for debugging
+        timestamp = int(time.time())
+        debug_filename = f'debug_map_screenshot_{timestamp}.png'
+        debug_path = f'images/maps/{debug_filename}'
+        screenshot.save(debug_path)
+        logging.info(f"Map screenshot saved for debugging: {debug_path}")
+        
+        # Also save with timestamp for historical reference
+        timestamp_filename = f'{timestamp}.png'
+        timestamp_path = f'images/maps/{timestamp_filename}'
+        screenshot.save(timestamp_path)
+        
         screenshot_np = np.array(screenshot.convert('RGB'))
         screenshot_gray = cv2.cvtColor(screenshot_np, cv2.COLOR_RGB2GRAY)
 
         best_score = -1
         best_file = None
+        all_scores = []  # Store all scores for debugging
 
         # Take only files without numbers in the name
         files = [file for file in os.listdir('images/maps') if not any(char.isdigit() for char in file)]
+        logging.info(f"Comparing against {len(files)} map template files")
 
         for file in files:
             if file.endswith('.png'):
-                screenshot_to_compare = Image.open(f'images/maps/{file}').convert('RGB')
-                compare_np = np.array(screenshot_to_compare)
-                compare_gray = cv2.cvtColor(compare_np, cv2.COLOR_RGB2GRAY)
+                try:
+                    screenshot_to_compare = Image.open(f'images/maps/{file}').convert('RGB')
+                    compare_np = np.array(screenshot_to_compare)
+                    compare_gray = cv2.cvtColor(compare_np, cv2.COLOR_RGB2GRAY)
 
-                # Resize if needed
-                if screenshot_gray.shape != compare_gray.shape:
-                    compare_gray = cv2.resize(compare_gray, (screenshot_gray.shape[1], screenshot_gray.shape[0]))
+                    # Resize if needed
+                    if screenshot_gray.shape != compare_gray.shape:
+                        compare_gray = cv2.resize(compare_gray, (screenshot_gray.shape[1], screenshot_gray.shape[0]))
+                        logging.debug(f"Resized {file} to match screenshot dimensions")
 
-                score, _ = ssim(screenshot_gray, compare_gray, full=True)
-                if score > best_score:
-                    best_score = score
-                    best_file = file
+                    score, _ = ssim(screenshot_gray, compare_gray, full=True)
+                    all_scores.append((file, score))
+                    
+                    if score > best_score:
+                        best_score = score
+                        best_file = file
+                        
+                except Exception as e:
+                    logging.warning(f"Error processing {file}: {e}")
+
+        # Log all scores for debugging (top 5)
+        all_scores.sort(key=lambda x: x[1], reverse=True)
+        logging.info("Top 5 map matches:")
+        for i, (file, score) in enumerate(all_scores[:5]):
+            logging.info(f"  {i+1}. {file}: {score:.3f}")
 
         print(f"Best match: {best_file} (SSIM: {best_score:.3f})")
+        logging.info(f"Selected map: {best_file} with confidence {best_score:.3f}")
+        
         return best_file.split('.')[0]
 
     def debug_template_matching(self, tower_type="tier2", threshold=0.3):
@@ -561,36 +825,89 @@ class BTD6Bot:
             logging.error(f"Error in debug_template_matching: {e}")
             return []
 
-    def wait_for_image(self, image_paths, confidence=0.8):
-        while True:
-            for image_path in image_paths:
-                if self.find_image_on_screen(image_path, confidence)[0] is not None:
-                    return True
-            time.sleep(1)
-        return False
+    def get_maps(self):
+        """Get map names - either from hardcoded list or JSON file"""
+        # Hardcoded map list for faster startup
+        # This avoids the need to parse the JSON file during initialization
+        hardcoded_maps = [
+            "in_the_loop", "scrapyard", "tree_stump", "winter_park", "the_cabin",
+            "spa_pits", "carved", "town_center", "end_of_the_road", "monkey_meadow",
+            "cubism", "skates", "tinkerton", "middle_of_the_road", "one_two_tree",
+            "resort", "lotus_island", "candy_falls", "park_path", "alpine_run",
+            "frozen_over", "four_circles", "hedge", "logs"
+        ]
+        
+        # To use JSON loading instead (slower but more flexible), uncomment the line below:
+        # return self.read_maps()
+        
+        return hardcoded_maps
 
     def run(self):
         """Main bot loop"""
+        print("🎯 Starting bot cycle...")
         # Step 1: Click Event Collection
+        print("📦 Looking for Collection Event...")
         self.wait_and_click('images/misc/collect_event.png', 'Collect Event button')
         # Step 1.5 : Click Play
+        print("▶️ Clicking Play button...")
         self.wait_and_click('images/misc/play_button.png', 'Play button')
         # Step 2 : Read the map to play
         # map_name = self.read_which_map_to_play()
         # Step 2.5 : Take screenshot of the map
+        self.wait_for_any_image(['images/misc/collection_event_searchbar.png'])
+        print("🗺️ Identifying map to play...")
         map_name = self.take_screenshot_and_compare()
+        print(f"🎮 Playing map: {map_name}")
         # Step 3 : Play the map
         self.play_map(map_name)
         # Step 5 : Click Home 
+        print("🏠 Returning to home...")
         self.wait_and_click('images/end/home.png', 'Click Home')
-        self.wait_for_image(['images/collection_event/collect.png', 'images/misc/collect_event.png'], 0.8)
+        self.wait_for_any_image(['images/collection_event/collect.png', 'images/misc/collect_event.png'], 0.8)
         # Step 6 : Check Collect Event
+        print("📦 Checking for collection event...")
         self.collection_event()
+        print("✅ Bot cycle completed!")
 
 if __name__ == "__main__":
+    print("=" * 60)
+    print("🎮 BTD6 Automation Bot Starting Up")
+    print("=" * 60)
+    
+    # Show current configuration
+    print(f"📋 Configuration:")
+    print(f"   Difficulty: {GAME_DIFFICULTY}")
+    print(f"   Mode: {MODE}")
+    print(f"   Config File: {CONFIG_FILE if CONFIG_FILE else 'config.py (default)'}")
+    print()
+    
+    # Show usage if no arguments provided
+    if len(sys.argv) == 1:
+        print("💡 Usage examples:")
+        print("   python main.py                    # Use default config")
+        print("   python main.py config_easy        # Use easy difficulty")
+        print("   python main.py config_hard        # Use hard difficulty")
+        print("   python main.py config_impoppable  # Use impoppable mode")
+        print()
+    
     bot = BTD6Bot()
+    
+    print("\n🎮 Launching BTD6...")
     if not bot.launch_game():
+        print("❌ Failed to launch game. Exiting...")
         logging.error("Failed to launch game. Exiting...")
-    # bot.initialize_model()
-    while True : 
-        bot.run() 
+        exit(1)
+    
+    print("\n🎯 Bot is ready! Starting main loop...")
+    print("=" * 60)
+    
+    try:
+        while True: 
+            bot.run()
+    except KeyboardInterrupt:
+        print("\n⏹️ Bot stopped by user")
+    except Exception as e:
+        print(f"\n❌ Bot crashed: {e}")
+        logging.error(f"Bot crashed: {e}")
+    finally:
+        print("👋 Bot shutdown complete") 

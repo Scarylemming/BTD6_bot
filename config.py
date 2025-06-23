@@ -14,8 +14,8 @@ GAME_PATH = r"C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\BloonsTD6.
 # Map settings
 MAP_DIFFICULTY = "Beginner"
 DEFAULT_MAP = "In_the_loop"  # Default map to play
-GAME_DIFFICULTY = "Easy"   # Game difficulty
-MODE = "Standard"     # Game mode
+GAME_DIFFICULTY = "Hard"   # Game difficulty
+MODE = "Impoppable"     # Game mode
 
 # Tower settings
 DEFAULT_TOWERS = {
@@ -26,7 +26,7 @@ DEFAULT_TOWERS = {
 
 # Game settings
 ROUNDS_TO_PLAY = 20   # Number of rounds to play before restarting
-WAIT_TIME = 1.0       # Default wait time between actions (seconds)
+WAIT_TIME = 0.1       # Default wait time between actions (seconds)
 
 # Image recognition settings
 CONFIDENCE_THRESHOLD = 0.5  # Minimum confidence for image recognition
