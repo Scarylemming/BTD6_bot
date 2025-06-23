@@ -2,6 +2,12 @@
 GAME_WINDOW_TITLE = "BloonsTD6"
 GAME_WINDOW_SIZE = (1280, 720)  # Default windowed mode size
 
+# Background operation settings
+RUN_IN_BACKGROUND = True  # Set to True to run bot behind the scenes
+MINIMIZE_AFTER_LAUNCH = True  # Minimize game window after launch
+RESTORE_WINDOW_BEFORE_ACTION = True  # Restore window before taking actions
+MINIMIZE_AFTER_ACTION = True  # Minimize window after completing actions
+
 # Game installation path
 GAME_PATH = r"C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\BloonsTD6.exe"  # Default Steam installation path
 

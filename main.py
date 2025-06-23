@@ -431,7 +431,7 @@ class BTD6Bot:
     def read_which_map_to_play(self):
         # Take a screenshot at the coordinates x=304, y=218, width=366, height=28
         screenshot = pyautogui.screenshot(region=(304, 215, 366, 45))
-        screenshot.save('images/misc/map_to_play.png')
+        # screenshot.save('images/misc/map_to_play.png')
         
         # Convert to grayscale for better OCR
         screenshot_np = np.array(screenshot)
@@ -483,7 +483,7 @@ class BTD6Bot:
     def take_screenshot_and_compare(self):
         # Take a screenshot of the map
         screenshot = pyautogui.screenshot(region=(290, 220, 437, 244))
-        screenshot.save(f'images/maps/{time.time()}.png')
+        # screenshot.save(f'images/maps/{time.time()}.png')
         screenshot_np = np.array(screenshot.convert('RGB'))
         screenshot_gray = cv2.cvtColor(screenshot_np, cv2.COLOR_RGB2GRAY)
 
@@ -561,6 +561,14 @@ class BTD6Bot:
             logging.error(f"Error in debug_template_matching: {e}")
             return []
 
+    def wait_for_image(self, image_paths, confidence=0.8):
+        while True:
+            for image_path in image_paths:
+                if self.find_image_on_screen(image_path, confidence)[0] is not None:
+                    return True
+            time.sleep(1)
+        return False
+
     def run(self):
         """Main bot loop"""
         # Step 1: Click Event Collection
@@ -575,7 +583,7 @@ class BTD6Bot:
         self.play_map(map_name)
         # Step 5 : Click Home 
         self.wait_and_click('images/end/home.png', 'Click Home')
-        time.sleep(10)
+        self.wait_for_image(['images/collection_event/collect.png', 'images/misc/collect_event.png'], 0.8)
         # Step 6 : Check Collect Event
         self.collection_event()
 
