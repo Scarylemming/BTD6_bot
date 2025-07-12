@@ -13,9 +13,9 @@ GAME_PATH = r"C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\BloonsTD6.
 
 # Map settings
 MAP_DIFFICULTY = "Beginner"
-DEFAULT_MAP = "In_the_loop"  # Default map to play
-GAME_DIFFICULTY = "Hard"   # Game difficulty
-MODE = "Impoppable"     # Game mode
+DEFAULT_MAP = "logs"  # Default map to play
+GAME_DIFFICULTY = "Easy"   # Game difficulty
+MODE = "deflation"     # Game mode
 
 # Tower settings
 DEFAULT_TOWERS = {
@@ -34,3 +34,8 @@ SCREENSHOT_REGION = None    # Region to capture (None = full screen)
 
 # Safety settings
 EMERGENCY_STOP_REGION = (0, 0, 100, 100)  # Top-left corner region for emergency stop 
+
+# Tesseract OCR settings
+# Uncomment and modify the path below if Tesseract is not in your system PATH
+# TESSERACT_PATH = r"C:\Program Files\Tesseract-OCR\tesseract.exe"  # Windows example
+# TESSERACT_PATH = "/usr/bin/tesseract"  # Linux/macOS example 

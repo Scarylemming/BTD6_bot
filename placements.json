@@ -6,7 +6,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [1163, 559],
                             "action": "place"
                         }
@@ -20,7 +20,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [1163, 559],
                             "action": "place"
                         }
@@ -32,7 +32,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [1163, 559],
                             "action": "place"
                         }
@@ -48,7 +48,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [281, 352],
                             "action": "place"
                         }
@@ -62,7 +62,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [281, 352],
                             "action": "place"
                         }
@@ -74,7 +74,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [281, 352],
                             "action": "place"
                         }
@@ -90,7 +90,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [457, 394],
                             "action": "place"
                         }
@@ -104,7 +104,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [457, 394],
                             "action": "place"
                         }
@@ -113,14 +113,62 @@
             },
             "impoppable": {
                 "rounds": {
-                    "1": [
+                    "6": [
                         {
-                            "method": "image",
-                            "image": "images/towers/u.png",
-                            "coordinates": [457, 394],
+                            "method": "key",
+                            "key": "q",
+                            "coordinates": [1435,710],
+                            "action": "place"
+                        },
+
+                        {
+                            "method": "key",
+                            "key": "q", 
+                            "coordinates": [418, 187],
                             "action": "place"
                         }
+                    ],
+
+                    "9": [
+                        {
+                            "method" :"image",
+                            "image": "images/towers/u_impoppable.png",
+                            "coordinates": [458,410],
+                            "action": "place"
+                        }
+                    ],
+
+                    "22": [
+                        {
+                            "method": "key",
+                            "key": "v", 
+                            "coordinates": [1372, 412],
+                            "action": "place"
+                        }, 
+
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1372, 412],
+                            "upgrade_path": [0,2,3]
+                        }
+                    ],
+
+                    "43": [
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1372, 412],
+                            "upgrade_path": [0, 0, 1]
+                        }
+                    ],
+
+                    "69": [
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1372, 412],
+                            "upgrade_path": [0, 0, 1]
+                        }
                     ]
+
                 }
             }
         }
@@ -132,7 +180,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [548, 463],
                             "action": "place"
                         }
@@ -146,7 +194,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [548, 463],
                             "action": "place"
                         }
@@ -173,7 +221,7 @@
                     "9": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "action": "place",
                             "coordinates": [573, 503]
                         }
@@ -197,7 +245,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [607, 360],
                             "action": "place"
                         }
@@ -211,7 +259,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [607, 360],
                             "action": "place"
                         }
@@ -223,7 +271,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [607, 360],
                             "action": "place"
                         }
@@ -239,7 +287,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [558, 724],
                             "action": "place"
                         }
@@ -253,7 +301,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [558, 724],
                             "action": "place"
                         }
@@ -265,7 +313,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [558, 724],
                             "action": "place"
                         }
@@ -281,7 +329,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [440, 502],
                             "action": "place"
                         }
@@ -295,7 +343,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [440, 502],
                             "action": "place"
                         }
@@ -307,7 +355,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [440, 502],
                             "action": "place"
                         }
@@ -323,7 +371,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [842, 596],
                             "action": "place"
                         }
@@ -337,7 +385,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [842, 596],
                             "action": "place"
                         }
@@ -349,7 +397,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [842, 596],
                             "action": "place"
                         }
@@ -365,7 +413,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [373, 588],
                             "action": "place"
                         }
@@ -379,7 +427,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [373, 588],
                             "action": "place"
                         }
@@ -388,14 +436,62 @@
             },
             "impoppable": {
                 "rounds": {
-                    "1": [
+                    "6": [
                         {
-                            "method": "image",
-                            "image": "images/towers/u.png",
-                            "coordinates": [373, 588],
+                            "method": "key",
+                            "key": "x",
+                            "coordinates": [1164,682],
+                            "action": "place"
+                        },
+
+                        {
+                            "method": "key",
+                            "key": "q", 
+                            "coordinates": [763, 508],
                             "action": "place"
                         }
+                    ],
+
+                    "9": [
+                        {
+                            "method" :"image",
+                            "image": "images/towers/u_impoppable.png",
+                            "coordinates": [458,590],
+                            "action": "place"
+                        }
+                    ],
+
+                    "22": [
+                        {
+                            "method": "key",
+                            "key": "v", 
+                            "coordinates": [649, 834],
+                            "action": "place"
+                        }, 
+
+                        {
+                            "action": "upgrade",
+                            "coordinates": [649, 834],
+                            "upgrade_path": [0,2,3]
+                        }
+                    ],
+
+                    "43": [
+                        {
+                            "action": "upgrade",
+                            "coordinates": [649, 834],
+                            "upgrade_path": [0, 0, 1]
+                        }
+                    ],
+
+                    "69": [
+                        {
+                            "action": "upgrade",
+                            "coordinates": [649, 834],
+                            "upgrade_path": [0, 0, 1]
+                        }
                     ]
+
                 }
             }
         }
@@ -407,7 +503,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [926, 509],
                             "action": "place"
                         }
@@ -421,7 +517,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [926, 509],
                             "action": "place"
                         }
@@ -433,7 +529,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [926, 509],
                             "action": "place"
                         }
@@ -449,7 +545,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [739, 575],
                             "action": "place"
                         }
@@ -463,7 +559,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [739, 575],
                             "action": "place"
                         }
@@ -472,12 +568,37 @@
             },
             "impoppable": {
                 "rounds": {
-                    "1": [
+                    "6": [
                         {
-                            "method": "image",
-                            "image": "images/towers/u.png",
-                            "coordinates": [739, 575],
+                            "method": "key",
+                            "key": "x",
+                            "coordinates": [836,361],
                             "action": "place"
+                        }
+                    ],
+                    "9": [
+                            {
+                                "method": "image",
+                                "image": "images/towers/u_impoppable.png",
+                                "coordinates": [755, 588],
+                                "action": "place"
+                            }
+                        ],
+
+                    "22": [
+                        {
+                            "method": "key",
+                            "key": "v",
+                            "coordinates": [493,265],
+                            "action": "place"
+                        }
+                    ],
+
+                    "30": [
+                        {
+                            "action": "upgrade",
+                            "coordinates": [836,361],
+                            "upgrade_path": [2, 1, 0]
                         }
                     ]
                 }
@@ -491,7 +612,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [441, 474],
                             "action": "place"
                         }
@@ -505,7 +626,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [441, 474],
                             "action": "place"
                         }
@@ -517,7 +638,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [441, 474],
                             "action": "place"
                         }
@@ -533,7 +654,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [484, 731],
                             "action": "place"
                         }
@@ -547,7 +668,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [484, 731],
                             "action": "place"
                         }
@@ -559,7 +680,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [484, 731],
                             "action": "place"
                         }
@@ -575,7 +696,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [539, 607],
                             "action": "place"
                         }
@@ -589,7 +710,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [539, 607],
                             "action": "place"
                         }
@@ -601,7 +722,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [539, 607],
                             "action": "place"
                         }
@@ -617,7 +738,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [217, 878],
                             "action": "place"
                         }
@@ -631,7 +752,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [217, 878],
                             "action": "place"
                         }
@@ -643,7 +764,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [217, 878],
                             "action": "place"
                         }
@@ -659,7 +780,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [421, 337],
                             "action": "place"
                         }
@@ -673,7 +794,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [421, 337],
                             "action": "place"
                         }
@@ -685,7 +806,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [421, 337],
                             "action": "place"
                         }
@@ -701,7 +822,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [1216, 615],
                             "action": "place"
                         }
@@ -715,7 +836,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [1216, 615],
                             "action": "place"
                         }
@@ -727,7 +848,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [1216, 615],
                             "action": "place"
                         }
@@ -743,7 +864,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [484, 816],
                             "action": "place"
                         }
@@ -757,7 +878,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [484, 816],
                             "action": "place"
                         }
@@ -769,7 +890,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [484, 816],
                             "action": "place"
                         }
@@ -785,7 +906,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [1050, 396],
                             "action": "place"
                         }
@@ -799,7 +920,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [1050, 396],
                             "action": "place"
                         }
@@ -811,7 +932,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [1050, 396],
                             "action": "place"
                         }
@@ -827,7 +948,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [636, 399],
                             "action": "place"
                         }
@@ -841,7 +962,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [636, 399],
                             "action": "place"
                         }
@@ -853,7 +974,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [636, 399],
                             "action": "place"
                         }
@@ -869,7 +990,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [365, 838],
                             "action": "place"
                         }
@@ -883,7 +1004,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [365, 838],
                             "action": "place"
                         }
@@ -892,11 +1013,27 @@
             },
             "impoppable": {
                 "rounds": {
-                    "1": [
+                    "6": [
+                        {
+                            "method": "key",
+                            "key": "x",
+                            "coordinates": [889, 600],
+                            "action": "place"
+                        }
+                    ],
+                    "9": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
-                            "coordinates": [365, 838],
+                            "image": "images/towers/u_impoppable.png",
+                            "coordinates": [737, 856],
+                            "action": "place"
+                        }
+                    ],
+                    "23": [
+                        {
+                            "method": "key",
+                            "key": "v",
+                            "coordinates": [1080,377],
                             "action": "place"
                         }
                     ]
@@ -911,7 +1048,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [808, 594],
                             "action": "place"
                         }
@@ -925,7 +1062,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [808, 594],
                             "action": "place"
                         }
@@ -937,7 +1074,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [808, 594],
                             "action": "place"
                         }
@@ -953,7 +1090,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [285, 511],
                             "action": "place"
                         }
@@ -967,7 +1104,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [285, 511],
                             "action": "place"
                         }
@@ -979,7 +1116,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [285, 511],
                             "action": "place"
                         }
@@ -995,8 +1132,42 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_easy.png",
                             "coordinates": [528, 358],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }, 
+            "deflation": {
+                "rounds": {
+                    "30": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [567, 598],
+                            "action": "place"
+                        }, 
+
+                        {
+                            "method": "key",
+                            "key": "a",
+                            "coordinates": [1022, 595],
+                            "action": "place"
+                        }, 
+
+                        {
+                            "method": "key",
+                            "image": "a",
+                            "coordinates": [1022, 595],
+                            "action": "upgrade",
+                            "upgrade_path": [5, 0, 2]
+                        },
+
+                        {
+                            "method": "key",
+                            "key": "i",
+                            "coordinates": [1558, 382],
                             "action": "place"
                         }
                     ]
@@ -1009,7 +1180,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_hard.png",
                             "coordinates": [528, 358],
                             "action": "place"
                         }
@@ -1021,7 +1192,7 @@
                     "1": [
                         {
                             "method": "image",
-                            "image": "images/towers/u.png",
+                            "image": "images/towers/u_impoppable.png",
                             "coordinates": [528, 358],
                             "action": "place"
                         }
@@ -1029,5 +1200,468 @@
                 }
             }
         }
+    },
+    "sunset_gulch": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [1396, 329],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [226,275],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [226, 275],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "pats_pond": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [1500, 700],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [158, 407],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [158, 407],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "erosion": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [758, 599],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1271, 574],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1271, 574],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                        
+                    ]
+                }
+            }
+        }
+    },
+    "spillway": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1350, 600],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1350, 600],
+                            "upgrade_path": [3, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "cargo": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [1179, 700],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "off_the_coast": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [400,500],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "high_finance": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [900,800],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "mesa": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [957, 598],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [400, 300],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [400, 300],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "another_brick": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [700, 280],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "castle_revenge": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [955, 563],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [653, 545],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [653, 545],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "dark_path": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [866, 345],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "last_resort": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [600, 273],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "x_factor": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [450, 600],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1271, 574],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1271, 574],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "underground": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [758, 599],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1271, 574],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1271, 574],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                        
+                    ]
+                }
+            }
+        }
+    },
+    "cornfield": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [758, 599],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "ancient_portal": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [1200, 530],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "geared": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1200, 670],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1200, 670],
+                            "upgrade_path": [3, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "sunken_columns": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [820, 950],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [1271, 700],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1271, 700],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "midnight_mansion": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "key",
+                            "key": "q",
+                            "coordinates": [1404, 351],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1404, 351],
+                            "upgrade_path": [0, 2, 4]
+                        },
+                        {
+                            "method": "key",
+                            "key": "f",
+                            "coordinates": [1261, 352],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [1261, 352],
+                            "upgrade_path": [2, 0, 0]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "enchanted_glade": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [850, 950],
+                            "action": "place"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "peninsula": {
+        "easy": {
+            "standard": {
+                "rounds": {
+                    "1": [
+                        {
+                            "method": "image",
+                            "image": "images/towers/u_easy.png",
+                            "coordinates": [1111, 845],
+                            "action": "place"
+                        },
+                        {
+                            "method": "key",
+                            "key": "b",
+                            "coordinates": [800, 200],
+                            "action": "place"
+                        },
+                        {
+                            "action": "upgrade",
+                            "coordinates": [800, 200],
+                            "upgrade_path": [2, 0, 1]
+                        }
+                    ]
+                }
+            }
+        }
     }
-} 
+}

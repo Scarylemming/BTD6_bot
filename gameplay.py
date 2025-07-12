@@ -99,4 +99,44 @@ class Gameplay:
             logging.error(f"Could not find image {image_path} on screen (max_val={max_val})")
             return False 
 
+    def upgrade_tower(self, coordinates, upgrade_path):
+        """
+        Upgrade a tower by clicking on it and then pressing the appropriate upgrade keys.
+        Args:
+            coordinates (tuple): (x, y) screen coordinates of the tower to upgrade.
+            upgrade_path (list): List of 3 integers representing the upgrade path [path1, path2, path3].
+                               Each integer represents the number of upgrades for that path.
+                               Example: [1, 2, 0] means 1 upgrade on path 1, 2 upgrades on path 2, 0 on path 3.
+        """
+        logging.info(f"Upgrading tower at {coordinates} with path {upgrade_path}")
+        
+        # Click on the tower to select it
+        pyautogui.moveTo(coordinates[0], coordinates[1], duration=0.2)
+        pyautogui.click()
+        time.sleep(0.3)  # Wait for tower selection
+        
+        # Define upgrade keys for each path
+        upgrade_keys = [",", ".", "/"]  # Path 1, Path 2, Path 3
+        
+        # Apply upgrades for each path
+        for path_index, num_upgrades in enumerate(upgrade_path):
+            if num_upgrades > 0:
+                key = upgrade_keys[path_index]
+                logging.info(f"Applying {num_upgrades} upgrade(s) to path {path_index + 1} using key '{key}'")
+                
+                for i in range(num_upgrades):
+                    keyboard.press_and_release(key)
+                    time.sleep(0.2)  # Wait between upgrades
+                    logging.info(f"Applied upgrade {i + 1}/{num_upgrades} to path {path_index + 1}")
+        
+        # Click outside the upgrade window to close it
+        # Move to a safe area (slightly offset from the tower) and click
+        close_x = coordinates[0] + 100  # 100 pixels to the right
+        close_y = coordinates[1] + 100  # 100 pixels down
+        pyautogui.moveTo(close_x, close_y, duration=0.2)
+        pyautogui.click()
+        time.sleep(0.2)  # Brief pause after closing
+        
+        logging.info(f"Tower upgrade completed at {coordinates} and upgrade window closed") 
+
     

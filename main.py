@@ -79,6 +79,14 @@ CONFIDENCE_THRESHOLD = CONFIG.CONFIDENCE_THRESHOLD
 SCREENSHOT_REGION = CONFIG.SCREENSHOT_REGION
 EMERGENCY_STOP_REGION = CONFIG.EMERGENCY_STOP_REGION
 
+# Tesseract configuration
+TESSERACT_PATH = getattr(CONFIG, 'TESSERACT_PATH', None)
+if TESSERACT_PATH:
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+    print(f"✅ Using Tesseract from: {TESSERACT_PATH}")
+else:
+    print("ℹ️ Using default Tesseract installation")
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -97,14 +105,51 @@ class BTD6Bot:
         print("🔧 Setting up safety features...")
         self.setup_safety_features()
         
+        print("🔍 Checking Tesseract installation...")
+        self.check_tesseract_installation()
+        
         print("🗺️ Loading map configurations...")
         self.MAPS = self.get_maps()
         print(f"✅ Loaded {len(self.MAPS)} maps")
+        self.game_won = False
 
     def setup_safety_features(self):
         """Setup emergency stop and other safety features"""
         pyautogui.FAILSAFE = True
         pyautogui.PAUSE = WAIT_TIME
+
+    def check_tesseract_installation(self):
+        """Check if Tesseract is properly installed and accessible"""
+        try:
+            # Try to get Tesseract version
+            version = pytesseract.get_tesseract_version()
+            print(f"✅ Tesseract version: {version}")
+            return True
+        except Exception as e:
+            print("❌ Tesseract is not installed or not found in PATH!")
+            print("\n📋 To fix this issue:")
+            print("1. Download Tesseract from: https://github.com/UB-Mannheim/tesseract/wiki")
+            print("2. Install it and make sure to check 'Add to PATH' during installation")
+            print("3. Or specify the path in your config file:")
+            print("   TESSERACT_PATH = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'")
+            print("\n🔧 Alternative solutions:")
+            print("- Restart your terminal/IDE after installation")
+            print("- Add Tesseract installation directory to your system PATH")
+            print("- Use the TESSERACT_PATH configuration option")
+            
+            # Check if we have a custom path configured
+            if TESSERACT_PATH:
+                print(f"\n🔍 Trying configured path: {TESSERACT_PATH}")
+                try:
+                    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+                    version = pytesseract.get_tesseract_version()
+                    print(f"✅ Tesseract found at configured path: {version}")
+                    return True
+                except Exception as e2:
+                    print(f"❌ Tesseract not found at configured path: {e2}")
+            
+            print(f"\n❌ Error details: {e}")
+            return False
 
     def is_game_running(self):
         """Check if BTD6 is currently running"""
@@ -164,7 +209,7 @@ class BTD6Bot:
             logging.error(f"Error launching game: {e}")
             return False
 
-    def find_image_on_screen(self, image_path, confidence=CONFIDENCE_THRESHOLD):
+    def find_image_on_screen(self, image_path, confidence=CONFIDENCE_THRESHOLD, image_name=""):
         """Find an image on the screen using template matching"""
         try:
             # Take screenshot
@@ -207,25 +252,25 @@ class BTD6Bot:
                 center_y = max_loc[1] + th // 2
                 return (center_x, center_y), max_val
                 
-            logging.warning(f"Image not found with sufficient confidence. Max confidence: {max_val:.3f}")
+            logging.warning(f"Image {image_name} not found with sufficient confidence. Max confidence: {max_val:.3f}")
             return None, max_val
             
         except Exception as e:
-            logging.error(f"Error in find_image_on_screen: {e}")
+            logging.error(f"Error in find_image_on_screen for {image_name}: {e}")
             return None, None
 
-    def click_image(self, image_path, confidence=CONFIDENCE_THRESHOLD):
+    def click_image(self, image_path, confidence=CONFIDENCE_THRESHOLD, image_name=""):
         """Click on an image if found on screen"""
-        location, max_val = self.find_image_on_screen(image_path, confidence)
+        location, max_val = self.find_image_on_screen(image_path, confidence, image_name)
         if location:
             pyautogui.click(location)
             return True
         return False
 
-    def wait_and_click(self, image_path, description, confidence=CONFIDENCE_THRESHOLD):
+    def wait_and_click(self, image_path, description, confidence=CONFIDENCE_THRESHOLD, image_name=""):
         logging.info(f"Looking for {description}...")
         while self.running:
-            if self.click_image(image_path, confidence):
+            if self.click_image(image_path, confidence, image_name):
                 logging.info(f"Clicked {description}.")
                 # time.sleep(1)
                 return True
@@ -233,11 +278,11 @@ class BTD6Bot:
         return False
 
 
-    def wait_for_any_image(self, image_paths, confidence=0.8):
+    def wait_for_any_image(self, image_paths, confidence=0.8, image_name=""):
         logging.info(f"Waiting for any of these images: {image_paths}")
         while True:
             for image_path in image_paths:
-                if self.find_image_on_screen(image_path, confidence)[0] is not None:
+                if self.find_image_on_screen(image_path, confidence, image_name)[0] is not None:
                     logging.info(f"Found image: {image_path}")
                     return True
             time.sleep(1)
@@ -377,7 +422,7 @@ class BTD6Bot:
 
     def collection_event(self):
         """Handle collection event using template matching instead of hardcoded coordinates"""
-        if self.find_image_on_screen('images/collection_event/collect.png')[0] is not None:
+        if self.find_image_on_screen('images/collection_event/collect.png', image_name="collect")[0] is not None:
             print("Collect towers")
             self.wait_and_click('images/collection_event/collect.png', 'Click Collection Event')
             self.wait_for_any_image(['images/collection_event/tier4.png', 'images/collection_event/tier3.png', 'images/collection_event/tier2.png', 'images/collection_event/tier1.png'])
@@ -413,8 +458,8 @@ class BTD6Bot:
             self.wait_and_click('images/collection_event/continue.png', 'Back to collection event')
             
             # Check if we need to go back to collection event screen
-            if (self.find_image_on_screen('images/collection_event/collection_event.png')[0] is not None and 
-                self.find_image_on_screen('images/collection_event/collect.png')[0] is None):
+            if (self.find_image_on_screen('images/collection_event/collection_event.png', image_name="collection_event")[0] is not None and 
+                self.find_image_on_screen('images/collection_event/collect.png', image_name="collect")[0] is None):
                 pyautogui.click(84, 67)
             
             self.wait_and_click('images/collection_event/back.png', 'Back to home')
@@ -484,7 +529,12 @@ class BTD6Bot:
                             logging.warning(f"Unknown placement method: {method} in action: {action}")
                     
                     elif action_type == "upgrade":
-                        if method == "key":
+                        if "upgrade_path" in action:
+                            # Use the new upgrade_tower method with upgrade path
+                            upgrade_path = action["upgrade_path"]
+                            gameplay.upgrade_tower(coordinates, upgrade_path)
+                            logging.info(f"Upgraded tower at {coordinates} with path {upgrade_path}")
+                        elif method == "key":
                             key = action["key"]
                             # Click on the tower at coordinates, then press the upgrade key
                             pyautogui.click(coordinates)
@@ -560,72 +610,91 @@ class BTD6Bot:
                 logging.warning(f"No rounds data found for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
                 return False
 
+            # Determine starting round based on difficulty and mode
+            if game_mode == "hard" and mode == "impoppable":
+                starting_round = 6  # Impoppable starts with round 6
+                logging.info(f"Impoppable mode detected - placing only round {starting_round} towers")
+            elif game_mode == "easy" and mode == "deflation" :
+                starting_round = 30
+                logging.info(f"Deflation mode detected - placing only round {starting_round} towers")
+            else:
+                starting_round = 1  # Easy Standard and others start with round 1
+                logging.info(f"Standard mode detected - placing only round {starting_round} towers")
+
             gameplay = Gameplay()
             
-            # Sort rounds by number to ensure proper order
-            sorted_rounds = sorted(rounds_data.keys(), key=int)
+            # Only place towers from the starting round
+            starting_round_str = str(starting_round)
+            if starting_round_str not in rounds_data:
+                logging.warning(f"No actions found for starting round {starting_round}")
+                return False
             
-            for round_num in sorted_rounds:
-                round_actions = rounds_data[round_num]
-                
-                logging.info(f"Processing round {round_num} for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
-                
-                for action in round_actions:
-                    try:
-                        method = action.get("method", "key")
-                        coordinates = tuple(action["coordinates"])
-                        action_type = action.get("action", "place")
-                        
-                        if action_type == "place":
-                            if method == "key":
-                                key = action["key"]
-                                gameplay.place_tower(key, coordinates)
-                                logging.info(f"Placed tower with key '{key}' at {coordinates}")
-                            elif method == "image":
-                                if "image" not in action:
-                                    logging.error(f"Missing 'image' field in action: {action}")
-                                    continue
-                                image = action["image"]
-                                gameplay.place_tower_by_image(image, coordinates)
-                                logging.info(f"Placed tower with image '{image}' at {coordinates}")
-                            else:
-                                logging.warning(f"Unknown placement method: {method} in action: {action}")
-                        
-                        elif action_type == "upgrade":
-                            if method == "key":
-                                key = action["key"]
-                                # Click on the tower at coordinates, then press the upgrade key
-                                pyautogui.click(coordinates)
-                                time.sleep(0.1)
-                                keyboard.press_and_release(key)
-                                logging.info(f"Upgraded tower at {coordinates} with key '{key}'")
-                            else:
-                                logging.warning(f"Unknown upgrade method: {method} in action: {action}")
-                        
-                        elif action_type == "sell":
-                            # Click on the tower at coordinates, then press the sell key
-                            pyautogui.click(coordinates)
-                            time.sleep(0.1)
-                            keyboard.press_and_release('backspace')  # Default sell key
-                            logging.info(f"Sold tower at {coordinates}")
-                        
-                        elif action_type == "target":
-                            # Click on the tower at coordinates, then press the target key
-                            pyautogui.click(coordinates)
-                            time.sleep(0.1)
-                            target_key = action.get("key", "tab")  # Default target key
-                            keyboard.press_and_release(target_key)
-                            logging.info(f"Changed target priority at {coordinates} with key '{target_key}'")
-                        
+            round_actions = rounds_data[starting_round_str]
+            
+            logging.info(f"Processing starting round {starting_round} for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+            
+            for action in round_actions:
+                try:
+                    method = action.get("method", "key")
+                    coordinates = tuple(action["coordinates"])
+                    action_type = action.get("action", "place")
+                    
+                    if action_type == "place":
+                        if method == "key":
+                            key = action["key"]
+                            gameplay.place_tower(key, coordinates)
+                            logging.info(f"Placed tower with key '{key}' at {coordinates}")
+                            time.sleep(0.2)
+                        elif method == "image":
+                            if "image" not in action:
+                                logging.error(f"Missing 'image' field in action: {action}")
+                                continue
+                            image = action["image"]
+                            gameplay.place_tower_by_image(image, coordinates)
+                            logging.info(f"Placed tower with image '{image}' at {coordinates}")
                         else:
-                            logging.warning(f"Unknown action type: {action_type} in action: {action}")
-                        
-                        time.sleep(0.5)  # Small delay between actions
-                        
-                    except Exception as e:
-                        logging.error(f"Error processing action {action}: {e}")
+                            logging.warning(f"Unknown placement method: {method} in action: {action}")
+                    
+                    elif action_type == "upgrade":
+                        if "upgrade_path" in action:
+                            # Use the new upgrade_tower method with upgrade path
+                            upgrade_path = action["upgrade_path"]
+                            gameplay.upgrade_tower(coordinates, upgrade_path)
+                            logging.info(f"Upgraded tower at {coordinates} with path {upgrade_path}")
+                        elif method == "key":
+                            key = action["key"]
+                            # Click on the tower at coordinates, then press the upgrade key
+                            pyautogui.click(coordinates)
+                            time.sleep(0.1)
+                            keyboard.press_and_release(key)
+                            logging.info(f"Upgraded tower at {coordinates} with key '{key}'")
+                        else:
+                            logging.warning(f"Unknown upgrade method: {method} in action: {action}")
+                    
+                    elif action_type == "sell":
+                        # Click on the tower at coordinates, then press the sell key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        keyboard.press_and_release('backspace')  # Default sell key
+                        logging.info(f"Sold tower at {coordinates}")
+                    
+                    elif action_type == "target":
+                        # Click on the tower at coordinates, then press the target key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        target_key = action.get("key", "tab")  # Default target key
+                        keyboard.press_and_release(target_key)
+                        logging.info(f"Changed target priority at {coordinates} with key '{target_key}'")
+                    
+                    else:
+                        logging.warning(f"Unknown action type: {action_type} in action: {action}")
+                    
+                    time.sleep(0.5)  # Small delay between actions
+                    
+                except Exception as e:
+                    logging.error(f"Error processing action {action}: {e}")
             
-            logging.info(f"All towers placed for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
+            logging.info(f"Starting round {starting_round} towers placed for map '{map_name}' in '{game_mode}' mode with '{mode}' mode")
             return True
             
         except Exception as e:
@@ -692,44 +761,104 @@ class BTD6Bot:
             closest_match = self.find_best_map_match(text)
         print("Map to play:", closest_match)
         return closest_match
-    
-    def play_map(self, map_name):
+
+    def navigate_to_map(self, map_name):
         # Click on the map
-        pyautogui.click(500,400)
-        # self.wait_and_click(f'images/maps/{map_name}.png', f'Map: {map_name}')
+        if MAP_DIFFICULTY == "beginner":
+            pyautogui.click(500,400)
+        elif MAP_DIFFICULTY == "intermediate":
+            pyautogui.click(950,400)
+        elif MAP_DIFFICULTY == "advanced":
+            pyautogui.click(1400,400)
+        elif MAP_DIFFICULTY == "expert":
+            pyautogui.click(500,750)
+
         # Click on the difficulty
         self.wait_and_click(f'images/difficulty/{GAME_DIFFICULTY}.png', f'{GAME_DIFFICULTY} difficulty')
         # Click on the mode
         self.wait_and_click(f'images/difficulty/{MODE}.png', f'Mode: {MODE}')
         # If Impoppable, click on OK to pass the warning
-        if MODE == "Impoppable":
+        if MODE in ["impoppable", "deflation"]:
             self.wait_and_click(f'images/misc/ok.png', 'OK button')
+
+    
+    def play_map(self, map_name):
         # Click on the round
         self.wait_for_any_image([f'images/misc/churchill.png'])
-        # Place towers - uses GAME_DIFFICULTY automatically
+        # Place initial towers - uses GAME_DIFFICULTY automatically
         self.place_towers_for_map(map_name)
         # Press space to start the game
         keyboard.press_and_release('space')
         time.sleep(0.1)
         keyboard.press_and_release('space')
-        # Click on the next
-        self.wait_and_click(f'images/end/next.png', 'Finished, click next')
+        
+        # For easy mode, just wait for game to finish without monitoring rounds
+        if GAME_DIFFICULTY.lower() == "easy":
+            logging.info("Easy mode detected - skipping round monitoring")
+            # Wait for game to finish by checking for victory/next screen
+            while self.running:
+                if self.is_game_finished():
+                    logging.info("Game finished detected in easy mode")
+                    break
+                time.sleep(1)
+        elif MODE.lower() == "deflation":
+            logging.info("Deflation mode detected - skipping round monitoring")
+            # Wait for game to finish by checking for victory/next screen
+            while self.running:
+                if self.is_game_finished():
+                    logging.info("Game finished detected in deflation mode")
+                    break
+                time.sleep(1)
+            self.wait_and_click(f'images/end/next.png', 'Finished, click next')
+            self.wait_and_click(f'images/misc/play_freeplay.png', 'Click on the freeplay mode', confidence=0.8)
+            self.wait_for_any_image([f'images/misc/freeplay.png'])
+            self.wait_and_click(f'images/misc/ok.png', 'Click on the freeplay mode')
+            time.sleep(1)
+            keyboard.press_and_release('space')
+            self.wait_and_click(f'images/misc/insta_monkey.png', 'Click on the insta monkey')
+        else:
+            # Monitor rounds and execute actions during gameplay for other difficulties
+            self.monitor_rounds_and_execute(map_name)
 
-    def take_screenshot_and_compare(self):
+    def restart_game(self): # To prevent lag from accumulating RAM
+        keyboard.press_and_release('esc')
+        self.wait_and_click(f'images/misc/quit.png', 'Quit game')
+
+        time.sleep(10)
+
+        # Launch the game back
+        self.launch_game()
+        self.finish_launching_game()
+
+    def finish_launching_game(self):
+        self.wait_and_click(f'images/misc/start.png', 'Start BTD6')
+        self.wait_for_any_image([f'images/misc/modded_client.png'])
+        time.sleep(1)
+        self.wait_and_click(f'images/misc/continue.png', 'Continue in the Modder warning')
+
+    def take_screenshot_and_compare(self, save_screenshot=False):
         # Take a screenshot of the map
-        screenshot = pyautogui.screenshot(region=(290, 220, 437, 244))
+        if MAP_DIFFICULTY == "beginner":
+            screenshot = pyautogui.screenshot(region=(290, 220, 437, 244))
+        elif MAP_DIFFICULTY == "intermediate":
+            screenshot = pyautogui.screenshot(region=(755, 217, 407, 270))
+        elif MAP_DIFFICULTY == "advanced":
+            screenshot = pyautogui.screenshot(region=(1225, 219, 408, 262))
+        elif MAP_DIFFICULTY == "expert":
+            screenshot = pyautogui.screenshot(region=(288, 565, 398, 269))
         
         # Save screenshot with descriptive name for debugging
         timestamp = int(time.time())
         debug_filename = f'debug_map_screenshot_{timestamp}.png'
-        debug_path = f'images/maps/{debug_filename}'
+        debug_path = f'debug_images/{debug_filename}'
         screenshot.save(debug_path)
         logging.info(f"Map screenshot saved for debugging: {debug_path}")
         
         # Also save with timestamp for historical reference
-        timestamp_filename = f'{timestamp}.png'
-        timestamp_path = f'images/maps/{timestamp_filename}'
-        screenshot.save(timestamp_path)
+        if save_screenshot:
+            timestamp_filename = f'{timestamp}.png'
+            timestamp_path = f'images/maps/{MAP_DIFFICULTY}/{timestamp_filename}'
+            screenshot.save(timestamp_path)
         
         screenshot_np = np.array(screenshot.convert('RGB'))
         screenshot_gray = cv2.cvtColor(screenshot_np, cv2.COLOR_RGB2GRAY)
@@ -739,13 +868,13 @@ class BTD6Bot:
         all_scores = []  # Store all scores for debugging
 
         # Take only files without numbers in the name
-        files = [file for file in os.listdir('images/maps') if not any(char.isdigit() for char in file)]
+        files = [file for file in os.listdir(f'images/maps/{MAP_DIFFICULTY}') if not any(char.isdigit() for char in file)]
         logging.info(f"Comparing against {len(files)} map template files")
 
         for file in files:
             if file.endswith('.png'):
                 try:
-                    screenshot_to_compare = Image.open(f'images/maps/{file}').convert('RGB')
+                    screenshot_to_compare = Image.open(f'images/maps/{MAP_DIFFICULTY}/{file}').convert('RGB')
                     compare_np = np.array(screenshot_to_compare)
                     compare_gray = cv2.cvtColor(compare_np, cv2.COLOR_RGB2GRAY)
 
@@ -842,31 +971,402 @@ class BTD6Bot:
         
         return hardcoded_maps
 
-    def run(self):
+    def read_current_round(self):
+        """Read the current round number from the game screen - optimized for dataset collection"""
+        try:
+            # Take a screenshot of the round number area
+            screenshot = pyautogui.screenshot(region=(1365, 80, 76, 42))
+            
+            # Convert to grayscale for better OCR
+            screenshot_np = np.array(screenshot)
+            gray = cv2.cvtColor(screenshot_np, cv2.COLOR_RGB2GRAY)
+            
+            # Use only the best preprocessing technique (Otsu thresholding)
+            _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            
+            # Use only the best OCR configuration
+            ocr_config = r'--oem 3 --psm 7 -c tessedit_char_whitelist=0123456789'
+            
+            try:
+                text = pytesseract.image_to_string(
+                    thresh,
+                    config=ocr_config,
+                    lang='eng'
+                )
+                
+                # Clean the text and extract number
+                text = text.strip()
+                
+                # Try to extract a number from the text
+                import re
+                match = re.search(r'\d+', text)
+                
+                detected_round = None
+                if match:
+                    round_num = int(match.group())
+                    
+                    # Basic validation
+                    if 1 <= round_num <= 200:
+                        detected_round = round_num
+                        logging.info(f"Detected round: {detected_round} (raw text: '{text}')")
+                    else:
+                        logging.warning(f"Invalid round number detected: {round_num} (raw text: '{text}')")
+                else:
+                    logging.warning(f"No number found in text: '{text}'")
+                
+                # Save debug screenshot with detected round number (for dataset collection)
+                timestamp = int(time.time())
+                if detected_round is not None:
+                    debug_filename = f'round_{detected_round}_{timestamp}.png'
+                    logging.info(f"Round screenshot saved: {debug_filename}")
+                else:
+                    debug_filename = f'round_none_{timestamp}.png'
+                    logging.warning(f"Failed to detect round - screenshot saved: {debug_filename}")
+                
+                debug_path = f'images/screenshots/{debug_filename}'
+                screenshot.save(debug_path)
+                
+                # Also save the processed image for dataset analysis
+                if detected_round is not None:
+                    processed_filename = f'round_{detected_round}_{timestamp}_processed.png'
+                    processed_path = f'images/screenshots/{processed_filename}'
+                    cv2.imwrite(processed_path, thresh)
+                
+                return detected_round
+                
+            except Exception as e:
+                logging.error(f"OCR failed: {e}")
+                
+                # Save screenshot even if OCR fails (for dataset analysis)
+                timestamp = int(time.time())
+                debug_filename = f'round_ocr_error_{timestamp}.png'
+                debug_path = f'images/screenshots/{debug_filename}'
+                screenshot.save(debug_path)
+                
+                return None
+                
+        except Exception as e:
+            logging.error(f"Error reading current round: {e}")
+            return None
+
+    def execute_round_actions(self, map_name, current_round):
+        """Execute tower placements and actions for the current round"""
+        try:
+            with open('placements.json', 'r') as f:
+                all_placements = json.load(f)
+            
+            # Check if map exists
+            if map_name not in all_placements:
+                logging.debug(f"Map '{map_name}' not found in placements.json")
+                return False
+            
+            map_data = all_placements[map_name]
+            
+            # Check if game difficulty exists for this map
+            game_difficulty = GAME_DIFFICULTY.lower()
+            if game_difficulty not in map_data:
+                logging.debug(f"Game difficulty '{game_difficulty}' not found for map '{map_name}'")
+                return False
+            
+            game_difficulty_data = map_data[game_difficulty]
+            
+            # Check if mode exists for this game difficulty
+            mode = MODE.lower()
+            if mode not in game_difficulty_data:
+                logging.debug(f"Mode '{mode}' not found for map '{map_name}' in '{game_difficulty}' difficulty")
+                return False
+            
+            mode_data = game_difficulty_data[mode]
+            rounds_data = mode_data.get("rounds", {})
+            
+            # Check if there are actions for the current round
+            if str(current_round) not in rounds_data:
+                logging.debug(f"No tower placements for round {current_round} on map '{map_name}' in '{game_difficulty}' difficulty with '{mode}' mode")
+                return False  # No actions for this round
+            
+            round_actions = rounds_data[str(current_round)]
+            gameplay = Gameplay()
+            
+            logging.info(f"Executing round {current_round} actions for map '{map_name}' in '{game_difficulty}' difficulty with '{mode}' mode")
+            
+            for action in round_actions:
+                try:
+                    method = action.get("method", "key")
+                    coordinates = tuple(action["coordinates"])
+                    action_type = action.get("action", "place")
+                    
+                    if action_type == "place":
+                        if method == "key":
+                            key = action["key"]
+                            gameplay.place_tower(key, coordinates)
+                            logging.info(f"Placed tower with key '{key}' at {coordinates}")
+                        elif method == "image":
+                            if "image" not in action:
+                                logging.error(f"Missing 'image' field in action: {action}")
+                                continue
+                            image = action["image"]
+                            gameplay.place_tower_by_image(image, coordinates)
+                            logging.info(f"Placed tower with image '{image}' at {coordinates}")
+                        else:
+                            logging.warning(f"Unknown placement method: {method} in action: {action}")
+                    
+                    elif action_type == "upgrade":
+                        if "upgrade_path" in action:
+                            # Use the new upgrade_tower method with upgrade path
+                            upgrade_path = action["upgrade_path"]
+                            gameplay.upgrade_tower(coordinates, upgrade_path)
+                            logging.info(f"Upgraded tower at {coordinates} with path {upgrade_path}")
+                        elif method == "key":
+                            key = action["key"]
+                            # Click on the tower at coordinates, then press the upgrade key
+                            pyautogui.click(coordinates)
+                            time.sleep(0.1)
+                            keyboard.press_and_release(key)
+                            logging.info(f"Upgraded tower at {coordinates} with key '{key}'")
+                        else:
+                            logging.warning(f"Unknown upgrade method: {method} in action: {action}")
+                    
+                    elif action_type == "sell":
+                        # Click on the tower at coordinates, then press the sell key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        keyboard.press_and_release('backspace')  # Default sell key
+                        logging.info(f"Sold tower at {coordinates}")
+                    
+                    elif action_type == "target":
+                        # Click on the tower at coordinates, then press the target key
+                        pyautogui.click(coordinates)
+                        time.sleep(0.1)
+                        target_key = action.get("key", "tab")  # Default target key
+                        keyboard.press_and_release(target_key)
+                        logging.info(f"Changed target priority at {coordinates} with key '{target_key}'")
+                    
+                    else:
+                        logging.warning(f"Unknown action type: {action_type} in action: {action}")
+                    
+                    time.sleep(0.5)  # Small delay between actions
+                    
+                except Exception as e:
+                    logging.error(f"Error processing action {action}: {e}")
+            
+            logging.info(f"Completed round {current_round} actions for map '{map_name}' in '{game_difficulty}' difficulty with '{mode}' mode")
+            return True
+            
+        except Exception as e:
+            logging.error(f"Error loading or processing placements.json for round {current_round}: {e}")
+            return False
+
+    def monitor_rounds_and_execute(self, map_name):
+        """Monitor the current round and execute tower placements when needed - optimized for dataset collection"""
+        logging.info(f"Starting round monitoring for map: {map_name}")
+        
+        last_round = None
+        executed_rounds = set()  # Track which rounds we've already executed
+        
+        # Get all available rounds for this map
+        try:
+            with open('placements.json', 'r') as f:
+                all_placements = json.load(f)
+            
+            if map_name not in all_placements:
+                logging.error(f"Map '{map_name}' not found in placements.json")
+                return
+            
+            map_data = all_placements[map_name]
+            game_difficulty = GAME_DIFFICULTY.lower()
+            mode = MODE.lower()
+            
+            if game_difficulty not in map_data or mode not in map_data[game_difficulty]:
+                logging.error(f"Configuration not found for map '{map_name}' in '{game_difficulty}' difficulty with '{mode}' mode")
+                return
+            
+            rounds_data = map_data[game_difficulty][mode].get("rounds", {})
+            available_rounds = [int(round_num) for round_num in rounds_data.keys()]
+            available_rounds.sort()  # Sort rounds in ascending order
+            
+            # Determine starting round based on difficulty and mode
+            if game_difficulty == "hard" and mode == "impoppable":
+                starting_round = 6  # Impoppable starts with round 6
+                logging.info(f"Impoppable mode detected - starting with round {starting_round}")
+            else:
+                starting_round = 1  # Easy Standard and others start with round 1
+                logging.info(f"Standard mode detected - starting with round {starting_round}")
+            
+            # Filter rounds to only include those >= starting_round
+            available_rounds = [round_num for round_num in available_rounds if round_num >= starting_round]
+            
+            logging.info(f"Available rounds for execution (starting from {starting_round}): {available_rounds}")
+            
+        except Exception as e:
+            logging.error(f"Error loading placements.json: {e}")
+            return
+        
+        while self.running:
+            try:
+                # Read current round (optimized for speed)
+                current_round = self.read_current_round()
+                
+                if current_round is None:
+                    # If we can't read the round, wait a bit and try again
+                    time.sleep(0.1)  # Reduced delay for faster dataset collection
+                    continue
+                
+                # Check if round has changed
+                if current_round != last_round:
+                    logging.info(f"Round changed from {last_round} to {current_round}")
+                    last_round = current_round
+                
+                # Check which rounds should be executed now
+                rounds_to_execute = []
+                for target_round in available_rounds:
+                    # Only execute if:
+                    # 1. Target round is less than or equal to current round
+                    # 2. Target round hasn't been executed yet
+                    # 3. Current round is at least the starting round
+                    if (target_round <= current_round and 
+                        target_round not in executed_rounds and 
+                        current_round >= starting_round):
+                        rounds_to_execute.append(target_round)
+                
+                # Execute actions for rounds that should be executed now
+                for round_to_execute in rounds_to_execute:
+                    logging.info(f"Executing actions for round {round_to_execute} (current round: {current_round})")
+                    if self.execute_round_actions(map_name, round_to_execute):
+                        executed_rounds.add(round_to_execute)
+                        logging.info(f"Successfully executed actions for round {round_to_execute}")
+                    else:
+                        logging.debug(f"No actions to execute for round {round_to_execute}")
+                
+                # Check if game is finished (look for victory or defeat screen)
+                if self.is_game_finished():
+                    logging.info("Game finished detected")
+                    break
+                
+                # Reduced delay for faster dataset collection
+                time.sleep(0.2)  # Reduced from 0.5 to 0.2 seconds
+                
+            except KeyboardInterrupt:
+                logging.info("Round monitoring interrupted by user")
+                break
+            except Exception as e:
+                logging.error(f"Error in round monitoring: {e}")
+                time.sleep(0.5)  # Keep this delay for error recovery
+        
+        logging.info(f"Round monitoring completed for map: {map_name}")
+    
+    def is_game_finished(self):
+        """Check if the game is finished (victory or defeat)"""
+        try:
+            # Look for victory or defeat indicators
+            # You can add more specific checks here based on your game's UI
+            victory_indicators = [
+                'images/end/victory.png',
+                'images/end/next.png',
+                'images/end/restart_button.png',
+                'images/misc/level_up.png'
+            ]
+            
+            for indicator in victory_indicators:
+                if self.find_image_on_screen(indicator, confidence=0.7, image_name=indicator.split('/')[-1])[0] is not None:
+                    return True
+            
+            return False
+            
+        except Exception as e:
+            logging.error(f"Error checking if game is finished: {e}")
+            return False
+
+    def find_map_to_play(self):
+        """Find the map to play"""
+        self.wait_and_click(f'images/difficulty/{MAP_DIFFICULTY}.png', 'Difficulty button')
+        while self.find_image_on_screen(f'images/maps/{DEFAULT_MAP}.png', confidence=0.5)[0] is None :
+            time.sleep(0.3)
+            self.wait_and_click(f'images/difficulty/{MAP_DIFFICULTY}.png', 'Difficulty button')
+            
+        self.wait_and_click(f'images/maps/{DEFAULT_MAP}.png', 'Map button')
+        return True
+
+    def finish_game(self, write_in_terminal = False): 
+        if self.find_image_on_screen(f'images/end/next.png', confidence=0.7, image_name="next")[0] is not None:
+            self.wait_and_click(f'images/end/next.png', 'Finished, click next')
+            
+            self.game_won = True
+            return True
+        elif self.find_image_on_screen(f'images/end/restart_button.png', confidence=0.7, image_name="restart")[0] is not None:
+            self.wait_and_click(f'images/end/restart_button.png', 'Restart button')
+            self.wait_and_click(f'images/end/confirm_restart.png', 'Confirm restart')
+            self.game_won = False
+            return True
+        elif self.find_image_on_screen(f'images/misc/level_up.png', confidence=0.7, image_name="level_up")[0] is not None:
+            
+            self.wait_and_click(f'images/misc/level_up.png', 'Level up')
+            if self.finish_game():
+                self.game_won = True
+                return True
+            else:
+                self.game_won = False
+                return False
+        else:
+            self.game_won = False
+            return False
+
+    def run_collect_event(self):
         """Main bot loop"""
         print("🎯 Starting bot cycle...")
-        # Step 1: Click Event Collection
-        print("📦 Looking for Collection Event...")
-        self.wait_and_click('images/misc/collect_event.png', 'Collect Event button')
-        # Step 1.5 : Click Play
+        self.game_won = False
+        # Step 1 : Click Play
         print("▶️ Clicking Play button...")
-        self.wait_and_click('images/misc/play_button.png', 'Play button')
+        self.wait_and_click('images/misc/play_button.png', 'Play button', confidence=0.7) 
+        # Step 2 : Click search 
+        self.wait_and_click('images/misc/search.png', 'Click search button')
+        # Step 2.1 : Click Search collect event
+        self.wait_and_click('images/misc/search_collect_event.png', 'Click search collect event')
         # Step 2 : Read the map to play
         # map_name = self.read_which_map_to_play()
         # Step 2.5 : Take screenshot of the map
         self.wait_for_any_image(['images/misc/collection_event_searchbar.png'])
         print("🗺️ Identifying map to play...")
-        map_name = self.take_screenshot_and_compare()
+        map_name = self.take_screenshot_and_compare(save_screenshot=False)
         print(f"🎮 Playing map: {map_name}")
-        # Step 3 : Play the map
-        self.play_map(map_name)
+
+        self.navigate_to_map(map_name)
+        
+        while not self.game_won:
+            # Step 3 : Play the map
+            self.play_map(map_name)
+            # Step 4 : Finish the game
+            while not self.finish_game():
+                time.sleep(0.5)
+
         # Step 5 : Click Home 
         print("🏠 Returning to home...")
         self.wait_and_click('images/end/home.png', 'Click Home')
-        self.wait_for_any_image(['images/collection_event/collect.png', 'images/misc/collect_event.png'], 0.8)
+        # self.wait_for_any_image(['images/collection_event/collect.png', 'images/misc/collect_event.png'], 0.8)
         # Step 6 : Check Collect Event
-        print("📦 Checking for collection event...")
-        self.collection_event()
+        # print("📦 Checking for collection event...")
+        # self.collection_event()
+        print("✅ Bot cycle completed!")
+
+    def run_normal_game(self):
+        """Main bot loop"""
+        print("🎯 Starting bot cycle...")
+        self.game_won = False
+        # Step 1 : Click Play
+        print("▶️ Clicking Play button...")
+        self.wait_and_click('images/misc/play_button.png', 'Play button')
+        # Step 2 : Click the map difficulty
+        self.find_map_to_play()
+        self.navigate_to_map()
+        while not self.game_won:
+            # Step 3 : Play the map
+            self.play_map(map_name)
+            # Step 4 : Finish the game
+            while not self.finish_game():
+                time.sleep(0.5)
+
+        # Step 5 : Click Home 
+        print("🏠 Returning to home...")
+        self.wait_and_click('images/end/home.png', 'Click Home')
         print("✅ Bot cycle completed!")
 
 if __name__ == "__main__":
@@ -900,10 +1400,12 @@ if __name__ == "__main__":
     
     print("\n🎯 Bot is ready! Starting main loop...")
     print("=" * 60)
+
+    # bot.restart_game()
     
     try:
         while True: 
-            bot.run()
+            bot.run_collect_event()
     except KeyboardInterrupt:
         print("\n⏹️ Bot stopped by user")
     except Exception as e:
