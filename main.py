@@ -793,7 +793,7 @@ class BTD6Bot:
         keyboard.press_and_release('space')
         
         # For easy mode, just wait for game to finish without monitoring rounds
-        if GAME_DIFFICULTY.lower() == "easy":
+        if GAME_DIFFICULTY.lower() == "easy" and MODE.lower() != "deflation":
             logging.info("Easy mode detected - skipping round monitoring")
             # Wait for game to finish by checking for victory/next screen
             while self.running:
@@ -801,7 +801,7 @@ class BTD6Bot:
                     logging.info("Game finished detected in easy mode")
                     break
                 time.sleep(1)
-        elif MODE.lower() == "deflation":
+        elif MODE.lower() == "deflation": # If Deflation, click on the next button, then on the freeplay mode, then on the ok button, then on the space button, then on the insta monkey button
             logging.info("Deflation mode detected - skipping round monitoring")
             # Wait for game to finish by checking for victory/next screen
             while self.running:
@@ -1279,11 +1279,19 @@ class BTD6Bot:
     def find_map_to_play(self):
         """Find the map to play"""
         self.wait_and_click(f'images/difficulty/{MAP_DIFFICULTY}.png', 'Difficulty button')
-        while self.find_image_on_screen(f'images/maps/{DEFAULT_MAP}.png', confidence=0.5)[0] is None :
+        while self.find_image_on_screen(f'images/maps/{MAP_DIFFICULTY}/{DEFAULT_MAP}.png', confidence=0.5)[0] is None :
             time.sleep(0.3)
             self.wait_and_click(f'images/difficulty/{MAP_DIFFICULTY}.png', 'Difficulty button')
             
-        self.wait_and_click(f'images/maps/{DEFAULT_MAP}.png', 'Map button')
+        self.wait_and_click(f'images/maps/{MAP_DIFFICULTY}/{DEFAULT_MAP}.png', 'Map button')
+
+        # Click on the difficulty
+        self.wait_and_click(f'images/difficulty/{GAME_DIFFICULTY}.png', f'{GAME_DIFFICULTY} difficulty')
+        # Click on the mode
+        self.wait_and_click(f'images/difficulty/{MODE}.png', f'Mode: {MODE}')
+        # If Impoppable, click on OK to pass the warning
+        if MODE in ["impoppable", "deflation"]:
+            self.wait_and_click(f'images/misc/ok.png', 'OK button')
         return True
 
     def finish_game(self, write_in_terminal = False): 
@@ -1356,10 +1364,9 @@ class BTD6Bot:
         self.wait_and_click('images/misc/play_button.png', 'Play button')
         # Step 2 : Click the map difficulty
         self.find_map_to_play()
-        self.navigate_to_map()
         while not self.game_won:
             # Step 3 : Play the map
-            self.play_map(map_name)
+            self.play_map(DEFAULT_MAP)
             # Step 4 : Finish the game
             while not self.finish_game():
                 time.sleep(0.5)
@@ -1405,7 +1412,7 @@ if __name__ == "__main__":
     
     try:
         while True: 
-            bot.run_collect_event()
+            bot.run_normal_game()
     except KeyboardInterrupt:
         print("\n⏹️ Bot stopped by user")
     except Exception as e:

@@ -12,9 +12,9 @@ MINIMIZE_AFTER_ACTION = True  # Minimize window after completing actions
 GAME_PATH = r"C:\Program Files (x86)\Steam\steamapps\common\BloonsTD6\BloonsTD6.exe"  # Default Steam installation path
 
 # Map settings
-MAP_DIFFICULTY = "Beginner"
+MAP_DIFFICULTY = "beginner"
 DEFAULT_MAP = "logs"  # Default map to play
-GAME_DIFFICULTY = "Easy"   # Game difficulty
+GAME_DIFFICULTY = "easy"   # Game difficulty
 MODE = "deflation"     # Game mode
 
 # Tower settings
