@@ -1158,7 +1158,6 @@
 
                         {
                             "method": "key",
-                            "image": "a",
                             "coordinates": [1022, 595],
                             "action": "upgrade",
                             "upgrade_path": [5, 0, 2]

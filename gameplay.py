@@ -116,7 +116,7 @@ class Gameplay:
         time.sleep(0.3)  # Wait for tower selection
         
         # Define upgrade keys for each path
-        upgrade_keys = [",", ".", "/"]  # Path 1, Path 2, Path 3
+        upgrade_keys = ["8", "9", "0"]  # Path 1, Path 2, Path 3
         
         # Apply upgrades for each path
         for path_index, num_upgrades in enumerate(upgrade_path):

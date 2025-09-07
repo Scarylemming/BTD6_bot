@@ -638,6 +638,7 @@ class BTD6Bot:
                     method = action.get("method", "key")
                     coordinates = tuple(action["coordinates"])
                     action_type = action.get("action", "place")
+                    print(action_type, action)
                     
                     if action_type == "place":
                         if method == "key":
