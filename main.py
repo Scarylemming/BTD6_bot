@@ -1284,7 +1284,7 @@ class BTD6Bot:
             time.sleep(0.3)
             self.wait_and_click(f'images/difficulty/{MAP_DIFFICULTY}.png', 'Difficulty button')
             
-        self.wait_and_click(f'images/maps/{MAP_DIFFICULTY}/{DEFAULT_MAP}.png', 'Map button')
+        self.wait_and_click(f'images/maps/{MAP_DIFFICULTY}/{DEFAULT_MAP}.png', 'Map button', confidence=0.5)
 
         # Click on the difficulty
         self.wait_and_click(f'images/difficulty/{GAME_DIFFICULTY}.png', f'{GAME_DIFFICULTY} difficulty')
